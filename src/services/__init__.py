@@ -2,6 +2,19 @@
 
 __version__ = "0.1.0"
 
+from .chat import (
+    ChatChoice,
+    ChatMessage,
+    ChatProvider,
+    ChatRequest,
+    ChatResponse,
+    ChatService,
+    ChatServiceError,
+    ChatUsage,
+    GenerateChat,
+    MinimaxChat,
+    OpenaiChat,
+)
 from .image import (
     GeneratedImage,
     GenerateImage,
@@ -38,9 +51,18 @@ from .tts import (
 
 __all__ = [
     "AudioSetting",
+    "ChatChoice",
+    "ChatMessage",
+    "ChatProvider",
+    "ChatRequest",
+    "ChatResponse",
+    "ChatService",
+    "ChatServiceError",
+    "ChatUsage",
     "ClonePrompt",
     "DeleteVoiceResponse",
     "GeneratedImage",
+    "GenerateChat",
     "GenerateImage",
     "GenerateSpeech",
     "ImageGenerationError",
@@ -48,8 +70,10 @@ __all__ = [
     "ImageRequest",
     "ImageResponse",
     "ImageService",
+    "MinimaxChat",
     "MinimaxImage",
     "MinimaxSpeech",
+    "OpenaiChat",
     "OpenaiImage",
     "SpeechProvider",
     "SpeechRequest",

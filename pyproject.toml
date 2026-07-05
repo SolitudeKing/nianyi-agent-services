@@ -35,6 +35,7 @@ dev = [
 [tool.setuptools]
 packages = [
     "services",
+    "services.chat",
     "services.image",
     "services.tts",
 ]

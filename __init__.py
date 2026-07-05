@@ -10,6 +10,19 @@ if _SOURCE_PACKAGE.is_dir():
 else:
     raise ImportError("services source package is missing.")
 
+from .chat import (  # noqa: E402
+    ChatChoice,
+    ChatMessage,
+    ChatProvider,
+    ChatRequest,
+    ChatResponse,
+    ChatService,
+    ChatServiceError,
+    ChatUsage,
+    GenerateChat,
+    MinimaxChat,
+    OpenaiChat,
+)
 from .image import (  # noqa: E402
     GeneratedImage,
     GenerateImage,
@@ -48,9 +61,18 @@ __version__ = "0.1.0"
 
 __all__ = [
     "AudioSetting",
+    "ChatChoice",
+    "ChatMessage",
+    "ChatProvider",
+    "ChatRequest",
+    "ChatResponse",
+    "ChatService",
+    "ChatServiceError",
+    "ChatUsage",
     "ClonePrompt",
     "DeleteVoiceResponse",
     "GeneratedImage",
+    "GenerateChat",
     "GenerateImage",
     "GenerateSpeech",
     "ImageGenerationError",
@@ -58,8 +80,10 @@ __all__ = [
     "ImageRequest",
     "ImageResponse",
     "ImageService",
+    "MinimaxChat",
     "MinimaxImage",
     "MinimaxSpeech",
+    "OpenaiChat",
     "OpenaiImage",
     "SpeechProvider",
     "SpeechRequest",
