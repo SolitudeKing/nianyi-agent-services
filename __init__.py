@@ -2,15 +2,8 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
-_SOURCE_PACKAGE = Path(__file__).resolve().parent / "src" / "services"
-if _SOURCE_PACKAGE.is_dir():
-    __path__.append(str(_SOURCE_PACKAGE))
-else:
-    raise ImportError("services source package is missing.")
-
-from .chat import (  # noqa: E402
+from .src.services import (
+    AudioSetting,
     ChatChoice,
     ChatMessage,
     ChatProvider,
@@ -19,27 +12,22 @@ from .chat import (  # noqa: E402
     ChatService,
     ChatServiceError,
     ChatUsage,
+    ClonePrompt,
+    DeleteVoiceResponse,
     GenerateChat,
-    MinimaxChat,
-    OpenaiChat,
-)
-from .image import (  # noqa: E402
     GeneratedImage,
     GenerateImage,
+    GenerateSpeech,
     ImageGenerationError,
     ImageProvider,
     ImageRequest,
     ImageResponse,
     ImageService,
+    MinimaxChat,
     MinimaxImage,
-    OpenaiImage,
-)
-from .tts import (  # noqa: E402
-    AudioSetting,
-    ClonePrompt,
-    DeleteVoiceResponse,
-    GenerateSpeech,
     MinimaxSpeech,
+    OpenaiChat,
+    OpenaiImage,
     SpeechProvider,
     SpeechRequest,
     SpeechResponse,
