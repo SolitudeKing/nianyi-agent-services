@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from services import (
     ChatMessage,
     ChatRequest,
@@ -141,3 +143,78 @@ def test_openai_chat_parses_content_and_reasoning_details() -> None:
     assert response.choices[0].message.reasoning_details == [{"text": "thinking"}]
     assert response.usage is not None
     assert response.usage.total_tokens == 3
+
+
+def test_minimax_chat_builds_request_from_default_model_params() -> None:
+    chat = MinimaxChat(
+        api_key="test-key",
+        model="MiniMax-M3",
+        max_completion_tokens=128,
+        reasoning_split=True,
+        thinking={"type": "disabled"},
+        extra_body={"service_tier": "priority"},
+    )
+
+    request = chat.buildRequest(
+        [{"role": "user", "content": "Hi"}],
+        max_completion_tokens=64,
+        extra_body={"custom": "value"},
+    )
+
+    assert request.model == "MiniMax-M3"
+    assert request.messages == [{"role": "user", "content": "Hi"}]
+    assert request.max_completion_tokens == 64
+    assert request.reasoning_split is True
+    assert request.thinking == {"type": "disabled"}
+    assert request.extra_body == {
+        "service_tier": "priority",
+        "custom": "value",
+    }
+
+
+def test_minimax_chat_complete_accepts_messages_directly() -> None:
+    chat = CapturingMinimaxChat(
+        api_key="test-key",
+        model="MiniMax-M3",
+        max_completion_tokens=128,
+        reasoning_split=True,
+    )
+
+    response = chat.complete([ChatMessage(role="user", content="Hi")])
+
+    assert response.content == "hello"
+    assert chat.payload == {
+        "model": "MiniMax-M3",
+        "messages": [{"role": "user", "content": "Hi"}],
+        "max_completion_tokens": 128,
+        "reasoning_split": True,
+    }
+
+
+class CapturingMinimaxChat(MinimaxChat):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.payload: dict[str, Any] | None = None
+
+    def _postJson(
+        self,
+        path: str,
+        payload: dict[str, Any],
+        *,
+        headers: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
+        self.payload = payload
+        return {
+            "id": "chatcmpl-1",
+            "model": payload["model"],
+            "choices": [
+                {
+                    "index": 0,
+                    "finish_reason": "stop",
+                    "message": {
+                        "role": "assistant",
+                        "content": "hello",
+                    },
+                }
+            ],
+        }
